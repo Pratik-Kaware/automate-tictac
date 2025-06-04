@@ -131,9 +131,10 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
       - name: set image outputs
         id: set_output
-        run: echo "image_tag=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+        run: echo "image_tag=${{ steps.meta.outputs.version }}" >> $GITHUB_OUTPUT
 
   update-kube:
     name: Update Kubernetes Deployment 
@@ -153,7 +154,7 @@ jobs:
       
       - name: Update Deployment YAML
         env: 
-          IMAGE_TAG: sha-${{ github.sha }}
+          IMAGE_TAG: ${{ needs.containerize.outputs.image_tag }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           REGISTRY: ghcr.io
         run: |
