@@ -104,7 +104,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,format=short
-            latest
+            
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
